@@ -68,5 +68,6 @@ int main(int argc, char** argv){
         }
         while (getchar() != '\n');
     } while (opcion != 'S' && opcion !='s');
+    destruirAbb(&arbol);
     return 0;
 }
