@@ -43,3 +43,13 @@ void anhadirPersonaje(TABB *arbol){
     insertarElementoAbb(arbol, personaje);
 
 }
+
+
+void listarPersonaje(TABB *arbol){
+    TIPOELEMENTOABB personaje;
+    char input[MAX];
+    printf("Introduce el nombre del personaje que quieres buscar: ");
+    scanf(" %s",input);
+
+    buscarNodoAbb(*arbol, input, &personaje);
+}

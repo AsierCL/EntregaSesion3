@@ -46,7 +46,7 @@ int main(int argc, char** argv){
             case 'l':
             printf("listar\n");
             sleep(2);
-
+            listarPersonaje(&arbol);
                 break;
 
             case 'E':
