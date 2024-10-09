@@ -99,3 +99,14 @@ void listarPersonajes(TABB arbol){
         listarPersonajes(derAbb(arbol));
     }
 }
+
+void eliminarPersonaje(TABB *arbol){
+    TIPOELEMENTOABB personaje;
+    char input[MAX];
+    printf("Introduce el nombre del personaje que quieres eliminar: ");
+    scanf(" %s",input);
+
+    buscarNodoAbb(*arbol, input, &personaje);
+
+    suprimirElementoAbb(arbol, personaje);
+}

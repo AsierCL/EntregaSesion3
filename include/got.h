@@ -7,4 +7,6 @@ void anhadirPersonaje(TABB *arbol);
 
 void listarPersonajes(TABB arbol);
 
+void eliminarPersonaje(TABB *arbol);
+
 #endif
