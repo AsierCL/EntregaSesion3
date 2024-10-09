@@ -16,11 +16,16 @@ void anhadirPersonaje(TABB *arbol){
     printf("\nCasa (? si es desconocida): ");
     scanf(" %[^\n\r]",personaje.house);
     
+    printf("\nRoyal (0/1): ");
+    scanf("%d",&personaje.royal);
+    
     crearLista(&personaje.parents);
     while(strcmp(input.nameP, "fin")){
         printf("\nParents (fin para terminar): ");
         scanf(" %[^\n\r]",input.nameP);
-        insertarElementoLista(&personaje.parents, finLista(personaje.parents), input);
+        if(strcmp(input.nameP, "fin")){
+            insertarElementoLista(&personaje.parents, finLista(personaje.parents), input);
+        }
     }
     input.nameP[0] = '\0';
 
@@ -28,7 +33,9 @@ void anhadirPersonaje(TABB *arbol){
     while(strcmp(input.nameP, "fin")){
         printf("\nSiblings (fin para terminar): ");
         scanf(" %[^\n\r]",input.nameP);
-        insertarElementoLista(&personaje.siblings, finLista(personaje.siblings), input);
+        if(strcmp(input.nameP, "fin")){
+            insertarElementoLista(&personaje.siblings, finLista(personaje.siblings), input);
+        }
     }
     input.nameP[0] = '\0';
 
@@ -36,7 +43,9 @@ void anhadirPersonaje(TABB *arbol){
     while(strcmp(input.nameP, "fin")){
         printf("\nKilled (fin para terminar): ");
         scanf(" %[^\n\r]",input.nameP);
-        insertarElementoLista(&personaje.killed, finLista(personaje.killed), input);
+        if(strcmp(input.nameP, "fin")){
+            insertarElementoLista(&personaje.killed, finLista(personaje.killed), input);
+        }
     }
     input.nameP[0] = '\0';
 
@@ -44,6 +53,31 @@ void anhadirPersonaje(TABB *arbol){
 
 }
 
+void imprimirLista(TLISTA lista){
+    //Elementos
+    TIPOELEMENTOLISTA elemento;
+    TPOSICION posicion = primeroLista(lista);
+    
+    for(int i=0;i<longitudLista(lista);i++){
+        recuperarElementoLista(lista, posicion, &elemento);
+        posicion = siguienteLista(lista, posicion);
+        printf("%s, ",elemento.nameP);
+    }
+}
+
+void imprimirPersonaje(TIPOELEMENTOABB personaje){
+    //Nombre
+    printf("%s\n",personaje.name);
+    printf("\tHouse: \t%s\n",personaje.house);
+    printf("\tRoyal\t%d\n",personaje.royal);
+    printf("\n\tParents: ");
+    imprimirLista(personaje.parents);
+    printf("\n\tSiblings: ");
+    imprimirLista(personaje.siblings);
+    printf("\n\tKilled: ");
+    imprimirLista(personaje.killed);
+    printf("\n");
+}
 
 void listarPersonaje(TABB *arbol){
     TIPOELEMENTOABB personaje;
@@ -52,4 +86,6 @@ void listarPersonaje(TABB *arbol){
     scanf(" %s",input);
 
     buscarNodoAbb(*arbol, input, &personaje);
+
+    imprimirPersonaje(personaje);
 }

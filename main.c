@@ -22,7 +22,7 @@ int main(int argc, char** argv){
     // BUCLE PARA A INTERFAZ GRÁFICA //
 
     do{
-        system("clear");
+        //system("clear");
         printf("\n--------------------------------------------------------------\n");
         printf("\nBienvenido al programa de gestion de personajes de GoT\n");
         printf("\nA) Anhadir personaje\n");
@@ -38,14 +38,12 @@ int main(int argc, char** argv){
             case 'A': 
             case 'a':
             printf("Anhadir\n");
-            sleep(2);
             anhadirPersonaje(&arbol);
                 break;
 
             case 'L':
             case 'l':
             printf("listar\n");
-            sleep(2);
             listarPersonaje(&arbol);
                 break;
 
