@@ -5,6 +5,6 @@
 
 void anhadirPersonaje(TABB *arbol);
 
-void listarPersonaje(TABB *arbol);
+void listarPersonajes(TABB arbol);
 
 #endif

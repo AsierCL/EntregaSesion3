@@ -79,7 +79,7 @@ void imprimirPersonaje(TIPOELEMENTOABB personaje){
     printf("\n");
 }
 
-void listarPersonaje(TABB *arbol){
+/* void listarPersonaje(TABB *arbol){
     TIPOELEMENTOABB personaje;
     char input[MAX];
     printf("Introduce el nombre del personaje que quieres buscar: ");
@@ -88,4 +88,14 @@ void listarPersonaje(TABB *arbol){
     buscarNodoAbb(*arbol, input, &personaje);
 
     imprimirPersonaje(personaje);
+} */
+
+void listarPersonajes(TABB arbol){
+    if(!esAbbVacio(arbol)){
+        TIPOELEMENTOABB elemento;
+        listarPersonajes(izqAbb(arbol));
+        leerElementoAbb(arbol, &elemento);
+        imprimirPersonaje(elemento);
+        listarPersonajes(derAbb(arbol));
+    }
 }
