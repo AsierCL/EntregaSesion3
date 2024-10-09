@@ -13,13 +13,13 @@
 
 int main(int argc, char** argv){
 
-    // Declaro as variables globales
+    // Variables globales
     char opcion;
     TABB arbol;
     crearAbb(&arbol);
 
 
-    // BUCLE PARA A INTERFAZ GRÁFICA //
+    // BUCLE PARA INTERFAZ GRÁFICA //
 
     do{
         //system("clear");
@@ -33,7 +33,7 @@ int main(int argc, char** argv){
         printf("\nOpción: ");
         scanf(" %c", &opcion);
         
-        // Entramos no switch
+        // Switch de menu
         switch (opcion) {
             case 'A': 
             case 'a':
@@ -43,7 +43,7 @@ int main(int argc, char** argv){
 
             case 'L':
             case 'l':
-            printf("listar\n");
+            printf("Listar\n");
             listarPersonajes(arbol);
                 break;
 
