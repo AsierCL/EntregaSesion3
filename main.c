@@ -50,7 +50,7 @@ int main(int argc, char** argv){
             case 'E':
             case 'e':
             printf("Eliminar\n");
-            sleep(2);
+            eliminarPersonaje(&arbol);
 
                 break;
 
