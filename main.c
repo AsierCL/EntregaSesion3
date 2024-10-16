@@ -61,8 +61,6 @@ int main(int argc, char** argv){
             case 'S':
             case 's':
             printf("Salir\n");
-            sleep(2);
-
                 break;
 
             default:
@@ -72,7 +70,20 @@ int main(int argc, char** argv){
         }
         while (getchar() != '\n');
     } while (opcion != 'S' && opcion !='s');
-    guardarArchivo("archivoguardado.txt",arbol);
+
+    // Guardar cambios, liberar memoria y salir
+
+    if(argc>1){// Usamos el nombre pasado como parámetro
+        if(strcmp(argv[1],"-f")==0){
+            guardarArchivo(argv[2],arbol);
+        }
+    }else{// Pedimos el nombre al usurario
+        printf("Introduce el nombre del archivo.txt en el que guardarás la información: ");
+        char nombre_archivo[MAX];
+        scanf(" %s",nombre_archivo);
+        guardarArchivo(nombre_archivo,arbol);
+    }
+
     destruirAbb(&arbol);
     return 0;
 }
