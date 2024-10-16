@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
+#include <math.h>
+#include <unistd.h>
 
 #include "../include/abb.h"
 
@@ -108,4 +111,94 @@ void eliminarPersonaje(TABB *arbol){
     // Busca y elimina el personaje
     buscarNodoAbb(*arbol, input, &personaje);
     suprimirElementoAbb(arbol, personaje);
+}
+
+
+
+//<------------------------------------------------------------------------------------------>//
+// Función para procesar una línea del archivo y almacenar los datos en TIPOELEMENTOABB
+
+// Función para procesar una línea del archivo y almacenar los datos en TIPOELEMENTOABB
+void procesar_linea(char* linea, TIPOELEMENTOABB* elemento) {
+    TIPOELEMENTOLISTA tempElement;  // Usaremos este elemento para agregar a las listas
+    char* token;
+    char* rest = linea;  // Variable auxiliar para strtok_r
+
+    // Token para el nombre
+    token = strtok_r(rest, "|", &rest);
+    if (token != NULL) {
+        strcpy(elemento->name, token);
+    }
+
+    // Token para la casa
+    token = strtok_r(rest, "|", &rest);
+    if (token != NULL) {
+        strcpy(elemento->house, token);
+    }
+
+    // Token para si es de la realeza (royal)
+    token = strtok_r(rest, "|", &rest);
+    if (token != NULL) {
+        elemento->royal = atoi(token);  // Convertimos el string a entero
+    }
+
+    // Token para los padres
+    token = strtok_r(rest, "|", &rest);
+    if (token != NULL) {
+        crearLista(&elemento->parents);  // Inicializamos la lista de padres
+        char* subtoken;
+        char* subrest = token;  // Variable auxiliar para los subtokens
+        while ((subtoken = strtok_r(subrest, ",", &subrest)) != NULL) {
+            strcpy(tempElement.nameP, subtoken);  // Copiamos el nombre al elemento de lista
+            insertarElementoLista(&elemento->parents, finLista(elemento->parents), tempElement);  // Insertamos en la lista
+        }
+    }
+
+    // Token para los hermanos
+    token = strtok_r(rest, "|", &rest);
+    if (token != NULL) {
+        crearLista(&elemento->siblings);  // Inicializamos la lista de hermanos
+        char* subtoken;
+        char* subrest = token;
+        while ((subtoken = strtok_r(subrest, ",", &subrest)) != NULL) {
+            strcpy(tempElement.nameP, subtoken);  // Copiamos el nombre al elemento de lista
+            insertarElementoLista(&elemento->siblings, finLista(elemento->siblings), tempElement);  // Insertamos en la lista
+        }
+    }
+
+    // Token para los asesinados
+    token = strtok_r(rest, "|", &rest);
+    if (token != NULL) {
+        crearLista(&elemento->killed);  // Inicializamos la lista de asesinados
+        char* subtoken;
+        char* subrest = token;
+        while ((subtoken = strtok_r(subrest, ",", &subrest)) != NULL) {
+            strcpy(tempElement.nameP, subtoken);  // Copiamos el nombre al elemento de lista
+            insertarElementoLista(&elemento->killed, finLista(elemento->killed), tempElement);  // Insertamos en la lista
+        }
+    }
+}
+
+
+void cargarArchivo(char* nombre_archivo, TABB* arbol_principal){
+    // Abro o arquivo
+    FILE *archivo_personajes = fopen(nombre_archivo, "r");
+    if (archivo_personajes == NULL){
+        perror("\x1b[31mErro ao abrir o arquivo de impresoras\x1b[0m\n");
+        exit(1);
+    }
+
+    char linea[1024];
+    while (fgets(linea, sizeof(linea), archivo_personajes)) {
+        // Eliminar el salto de línea si existe
+        linea[strcspn(linea, "\n")] = 0;
+
+        TIPOELEMENTOABB elemento;
+        procesar_linea(linea, &elemento);
+
+        insertarElementoAbb(arbol_principal,elemento);
+    }
+
+    // Cerramos o arquivo
+    fclose(archivo_personajes);
 }

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include <math.h>
 #include <unistd.h>
 
@@ -17,7 +18,11 @@ int main(int argc, char** argv){
     char opcion;
     TABB arbol;
     crearAbb(&arbol);
-
+    if(argc>1){
+        if(strcmp(argv[1],"-f")==0){
+            cargarArchivo(argv[2],&arbol);
+        }
+    }
 
     // BUCLE PARA INTERFAZ GRÁFICA //
 
@@ -51,7 +56,6 @@ int main(int argc, char** argv){
             case 'e':
             printf("Eliminar\n");
             eliminarPersonaje(&arbol);
-
                 break;
 
             case 'S':

@@ -30,4 +30,7 @@ void listarPersonajes(TABB arbol);
  */
 void eliminarPersonaje(TABB *arbol);
 
+//<------------------------------------------------------------------------------------------>//
+void cargarArchivo(char* nombre_arquivo, TABB* arbol_principal);
+
 #endif
