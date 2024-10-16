@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include <math.h>
 #include <unistd.h>
 
@@ -17,7 +18,11 @@ int main(int argc, char** argv){
     char opcion;
     TABB arbol;
     crearAbb(&arbol);
-
+    if(argc>1){
+        if(strcmp(argv[1],"-f")==0){
+            cargarArchivo(argv[2],&arbol);
+        }
+    }
 
     // BUCLE PARA INTERFAZ GRÁFICA //
 
@@ -51,14 +56,11 @@ int main(int argc, char** argv){
             case 'e':
             printf("Eliminar\n");
             eliminarPersonaje(&arbol);
-
                 break;
 
             case 'S':
             case 's':
             printf("Salir\n");
-            sleep(2);
-
                 break;
 
             default:
@@ -68,6 +70,20 @@ int main(int argc, char** argv){
         }
         while (getchar() != '\n');
     } while (opcion != 'S' && opcion !='s');
+
+    // Guardar cambios, liberar memoria y salir
+
+    if(argc>1){// Usamos el nombre pasado como parámetro
+        if(strcmp(argv[1],"-f")==0){
+            guardarArchivo(argv[2],arbol);
+        }
+    }else{// Pedimos el nombre al usurario
+        printf("Introduce el nombre del archivo.txt en el que guardarás la información: ");
+        char nombre_archivo[MAX];
+        scanf(" %s",nombre_archivo);
+        guardarArchivo(nombre_archivo,arbol);
+    }
+
     destruirAbb(&arbol);
     return 0;
 }

@@ -1,0 +1,6 @@
+Aegon Targaryen|Targaryen|1|Elia Martell,Rhaegar Targaryen|Rhaenys Targaryen,Jon Snow|-|
+Aeron Greyjoy|Greyjoy|0|Balon Greyjoy,Euron Greyjoy|-|-|
+Aerys II Targaryen|Targaryen|1|Rhaella Targaryen|Brandon Stark, Rickard Stark|-|
+Arya Stark|Stark|0|Eddard Stark,Catelyn Stark|Robb Stark,Sansa Stark, Bran Stark,Rickon Stark|Polliver,Rorge,Ghita,Meryn Trant,Lothar Frey,Walder Frey,Petyr Baelish,The Night King,White Walker,Viserion|
+Alton Lannister|Lannister|0|-|-|-|
+Ygritte|?|0|-|-|Old Man|
