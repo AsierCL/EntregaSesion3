@@ -117,10 +117,8 @@ void eliminarPersonaje(TABB *arbol){
 
 //<------------------------------------------------------------------------------------------>//
 // Función para procesar una línea del archivo y almacenar los datos en TIPOELEMENTOABB
-
-// Función para procesar una línea del archivo y almacenar los datos en TIPOELEMENTOABB
 void procesar_linea(char* linea, TIPOELEMENTOABB* elemento) {
-    TIPOELEMENTOLISTA tempElement;  // Usaremos este elemento para agregar a las listas
+    TIPOELEMENTOLISTA tempElement;
     char* token;
     char* rest = linea;  // Variable auxiliar para strtok_r
 
@@ -181,10 +179,10 @@ void procesar_linea(char* linea, TIPOELEMENTOABB* elemento) {
 
 
 void cargarArchivo(char* nombre_archivo, TABB* arbol_principal){
-    // Abro o arquivo
+    // Abro el archivo
     FILE *archivo_personajes = fopen(nombre_archivo, "r");
     if (archivo_personajes == NULL){
-        perror("\x1b[31mErro ao abrir o arquivo de impresoras\x1b[0m\n");
+        perror("\x1b[31mFallo al intentar abrir el archivo\x1b[0m\n");
         exit(1);
     }
 
@@ -199,6 +197,72 @@ void cargarArchivo(char* nombre_archivo, TABB* arbol_principal){
         insertarElementoAbb(arbol_principal,elemento);
     }
 
-    // Cerramos o arquivo
+    // Cierro el archivo
     fclose(archivo_personajes);
+}
+
+
+// Función auxiliar para guardar una lista en el archivo
+void guardarListaEnArchivo(FILE *archivo, TLISTA lista) {
+    TIPOELEMENTOLISTA elemento;
+    TPOSICION posicion = primeroLista(lista);
+
+    for (int i = 0; i < longitudLista(lista); i++) {
+        recuperarElementoLista(lista, posicion, &elemento);
+        posicion = siguienteLista(lista, posicion);
+        fprintf(archivo, "%s", elemento.nameP);
+        if (i < longitudLista(lista) - 1) {
+            fprintf(archivo, ","); // Añadimos coma entre elementos
+        }
+    }
+}
+
+// Función auxiliar para guardar un personaje en el archivo
+void guardarPersonaje(FILE *archivo, TIPOELEMENTOABB personaje) {
+    // Guardar el nombre
+    fprintf(archivo, "%s|", personaje.name);
+
+    // Guardar la casa
+    fprintf(archivo, "%s|", personaje.house);
+
+    // Guardar el indicador de si es royal (0 o 1)
+    fprintf(archivo, "%d|", personaje.royal);
+
+    // Guardar la lista de padres
+    guardarListaEnArchivo(archivo, personaje.parents);
+    fprintf(archivo, "|");
+
+    // Guardar la lista de hermanos
+    guardarListaEnArchivo(archivo, personaje.siblings);
+    fprintf(archivo, "|");
+
+    // Guardar la lista de asesinados
+    guardarListaEnArchivo(archivo, personaje.killed);
+    fprintf(archivo, "|\n");
+}
+
+void escrituraPreorden(FILE *archivo,TABB arbol){
+    // Recorrer el árbol e ir guardando los personajes
+    if (!esAbbVacio(arbol)) {
+        TIPOELEMENTOABB elemento;
+        
+        // Recorrido preorden del árbol (RID)
+        leerElementoAbb(arbol, &elemento);
+        guardarPersonaje(archivo, elemento);
+        escrituraPreorden(archivo, izqAbb(arbol));
+        escrituraPreorden(archivo, derAbb(arbol));
+    }
+}
+
+// Función principal para guardar el árbol en un archivo
+void guardarArchivo(const char* nombre_archivo, TABB arbol) {
+    FILE *archivo = fopen(nombre_archivo, "w");
+    if (archivo == NULL) {
+        printf("Error al abrir el archivo para escritura.\n");
+        return;
+    }
+
+    escrituraPreorden(archivo, arbol);
+
+    fclose(archivo);
 }

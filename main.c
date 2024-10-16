@@ -72,6 +72,7 @@ int main(int argc, char** argv){
         }
         while (getchar() != '\n');
     } while (opcion != 'S' && opcion !='s');
+    guardarArchivo("archivoguardado.txt",arbol);
     destruirAbb(&arbol);
     return 0;
 }
