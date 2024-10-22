@@ -309,3 +309,45 @@ void buscarAsesino(TABB arbol){
         printf("Arbol vacio\n");
     }
 }
+
+bool esHijo(char* padre, TIPOELEMENTOABB hijo){
+    // Variables
+    TIPOELEMENTOLISTA elemento;
+    TPOSICION posicion = primeroLista(hijo.parents);
+    
+    // Recorre e imprime la lista
+    for(int i = 0; i < longitudLista(hijo.parents); i++){
+        recuperarElementoLista(hijo.parents, posicion, &elemento);
+        posicion = siguienteLista(hijo.parents, posicion);
+        if(!strcmp(padre, elemento.nameP)){
+            return true;
+        }
+    }
+    return false;
+}
+
+void buscarHijoRecursivo(TABB arbol, char* padre){
+    TIPOELEMENTOABB elemento;
+    if(esAbbVacio(arbol)){
+        return;
+    }
+    buscarHijoRecursivo(izqAbb(arbol),padre);
+    leerElementoAbb(arbol, &elemento);
+    if(esHijo(padre, elemento)){
+        printf("%s,",elemento.name);
+    }
+    buscarHijoRecursivo(derAbb(arbol),padre);
+}
+
+void buscarHijo(TABB arbol){
+    char padre[MAX];
+    printf("Introduce el nombre del personaje que queres buscar sus hijos\n");
+    scanf(" %[^\n\r]",padre);
+    
+    if(!esAbbVacio(arbol)){
+        buscarHijoRecursivo(arbol,padre);
+    }else{
+        printf("Arbol vacio\n");
+    }
+}
+

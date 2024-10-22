@@ -35,5 +35,6 @@ void cargarArchivo(char* nombre_arquivo, TABB* arbol_principal);
 void guardarArchivo(const char* nombre_archivo, TABB arbol);
 //<------------------------------------------------------------------------------------------>//
 void buscarAsesino(TABB arbol);
+void buscarHijo(TABB arbol);
 
 #endif
