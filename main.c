@@ -51,6 +51,12 @@ int main(int argc, char** argv){
             printf("Buscar Asesino\n");
             buscarAsesino(arbol);
                 break;
+            
+            case 'H': 
+            case 'h':
+            printf("Buscar Hijo\n");
+            buscarHijo(arbol);
+                break;
 
             case 'L':
             case 'l':
