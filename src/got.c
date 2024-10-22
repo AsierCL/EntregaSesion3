@@ -266,3 +266,46 @@ void guardarArchivo(const char* nombre_archivo, TABB arbol) {
 
     fclose(archivo);
 }
+
+
+//<------------------------------------------------------------------------------------------>//
+bool esAsesino(char* muerto, TIPOELEMENTOABB asesino){
+    // Variables
+    TIPOELEMENTOLISTA elemento;
+    TPOSICION posicion = primeroLista(asesino.killed);
+    
+    // Recorre e imprime la lista
+    for(int i = 0; i < longitudLista(asesino.killed); i++){
+        recuperarElementoLista(asesino.killed, posicion, &elemento);
+        posicion = siguienteLista(asesino.killed, posicion);
+        if(!strcmp(muerto, elemento.nameP)){
+            return true;
+        }
+    }
+    return false;
+}
+
+void buscarAsesinoRecursivo(TABB arbol, char* muerto){
+    TIPOELEMENTOABB elemento;
+    if(esAbbVacio(arbol)){
+        return;
+    }
+    buscarAsesinoRecursivo(izqAbb(arbol),muerto);
+    leerElementoAbb(arbol, &elemento);
+    if(esAsesino(muerto, elemento)){
+        printf("%s,",elemento.name);
+    }
+    buscarAsesinoRecursivo(derAbb(arbol),muerto);
+}
+
+void buscarAsesino(TABB arbol){
+    char muerto[MAX];
+    printf("Introduce el nombre del personaje que queres buscar el asesino\n");
+    scanf(" %[^\n\r]",muerto);
+    
+    if(!esAbbVacio(arbol)){
+        buscarAsesinoRecursivo(arbol,muerto);
+    }else{
+        printf("Arbol vacio\n");
+    }
+}
