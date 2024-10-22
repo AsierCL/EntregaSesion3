@@ -46,6 +46,12 @@ int main(int argc, char** argv){
             anhadirPersonaje(&arbol);
                 break;
 
+            case 'B': 
+            case 'b':
+            printf("Buscar Asesino\n");
+            buscarAsesino(arbol);
+                break;
+
             case 'L':
             case 'l':
             printf("Listar\n");
