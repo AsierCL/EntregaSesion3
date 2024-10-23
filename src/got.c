@@ -351,3 +351,44 @@ void buscarHijo(TABB arbol){
     }
 }
 
+
+
+void buscarMayorKillerRecursivo(TABB arbol, int *max_killed){
+    TIPOELEMENTOABB elemento;
+    if(esAbbVacio(arbol)){
+        return;
+    }
+    buscarMayorKillerRecursivo(izqAbb(arbol), max_killed);
+    leerElementoAbb(arbol, &elemento);
+    if(longitudLista(elemento.killed) > *max_killed){
+        *max_killed = longitudLista(elemento.killed);
+    }
+    buscarMayorKillerRecursivo(derAbb(arbol), max_killed);
+}
+
+void printearMayorKillerRecursivo(TABB arbol, int max_killed){
+    TIPOELEMENTOABB elemento;
+    if(esAbbVacio(arbol)){
+        return;
+    }
+    printearMayorKillerRecursivo(izqAbb(arbol), max_killed);
+    leerElementoAbb(arbol, &elemento);
+    if(longitudLista(elemento.killed) == max_killed){
+        printf("%s,",elemento.name);
+    }
+    printearMayorKillerRecursivo(derAbb(arbol), max_killed);
+}
+
+void buscarMayorKiller(TABB arbol){
+    char padre[MAX];
+    printf("Mayor killer:\n");
+    int max_killed = 0;
+    
+    if(!esAbbVacio(arbol)){
+        buscarMayorKillerRecursivo(arbol, &max_killed);
+        printearMayorKillerRecursivo(arbol, max_killed);
+        printf("\n");
+    }else{
+        printf("Arbol vacio\n");
+    }
+}
