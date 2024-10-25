@@ -69,6 +69,12 @@ int main(int argc, char** argv){
             printf("Listar\n");
             listarPersonajes(arbol);
                 break;
+            
+            case 'M':
+            case 'm':
+            printf("Modificar personaje\n");
+            modificarPersonaje(&arbol);
+                break;
 
             case 'E':
             case 'e':
