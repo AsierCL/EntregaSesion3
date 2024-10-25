@@ -37,5 +37,6 @@ void guardarArchivo(const char* nombre_archivo, TABB arbol);
 void buscarAsesino(TABB arbol);
 void buscarHijo(TABB arbol);
 void buscarMayorKiller(TABB arbol);
+void modificarPersonaje(TABB *arbol);
 
 #endif

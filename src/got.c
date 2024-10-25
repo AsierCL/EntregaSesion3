@@ -392,3 +392,87 @@ void buscarMayorKiller(TABB arbol){
         printf("Arbol vacio\n");
     }
 }
+
+
+void modificarPersonaje(TABB *arbol){
+    // Variables
+    TIPOELEMENTOABB personaje, nuevopersonaje;
+    strcpy(personaje.name, "");
+    char input[MAX];
+    char campo[MAX];
+    TIPOELEMENTOLISTA valor;
+
+    printf("Introduce el nombre del personaje que quieres modificar: ");
+    scanf(" %[^\n\r]", input);
+
+    buscarNodoAbb(*arbol, input, &personaje);
+
+    // Verifica si se encontró el personaje
+    if (strcmp(personaje.name, "") == 0) {  // Si el nombre sigue vacío, no se encontró
+        printf("No se encontró el personaje\n");
+        return;
+    }
+
+    nuevopersonaje = personaje;
+
+    printf("PERSONAJE ENCONTRADO: \n");
+    printf("Que campo quieres modificar?\n");
+    printf("\tname\n\thouse\n\troyal\n\tparents\n\tsiblings\n\tkilled\n");
+    scanf(" %s", campo);
+
+    // Comparaciones de campo con strcmp
+    if (strcmp(campo, "name") == 0) {
+        printf("Introduce el nuevo nombre: ");
+        scanf(" %s", valor.nameP);
+        strcpy(personaje.name, valor.nameP);
+    } 
+    else if (strcmp(campo, "house") == 0) {
+        printf("Introduce la nueva casa: ");
+        scanf(" %s", valor.nameP);
+        strcpy(personaje.house, valor.nameP);
+    }
+    else if (strcmp(campo, "royal") == 0) {
+        printf("Introduce el nuevo valor para royal (0 o 1): ");
+        int intValor;
+        scanf("%d", &intValor);
+        personaje.royal = intValor;
+    }
+    else if (strcmp(campo, "parents") == 0) {
+        destruirLista(&personaje.parents);
+        crearLista(&personaje.parents);
+        while(strcmp(valor.nameP, "fin")){
+            printf("\nParents (fin para terminar): ");
+            scanf(" %[^\n\r]", valor.nameP);
+            if(strcmp(valor.nameP, "fin")){
+                insertarElementoLista(&personaje.parents, finLista(personaje.parents), valor);
+            }
+        }
+    }
+    else if (strcmp(campo, "siblings") == 0) {
+        destruirLista(&personaje.siblings);
+        crearLista(&personaje.siblings);
+        while(strcmp(valor.nameP, "fin")){
+            printf("\nSiblings (fin para terminar): ");
+            scanf(" %[^\n\r]", valor.nameP);
+            if(strcmp(valor.nameP, "fin")){
+                insertarElementoLista(&personaje.siblings, finLista(personaje.siblings), valor);
+            }
+        }
+    }
+    else if (strcmp(campo, "killed") == 0) {
+        destruirLista(&personaje.killed);
+        crearLista(&personaje.killed);
+        while(strcmp(valor.nameP, "fin")){
+            printf("\nKilled (fin para terminar): ");
+            scanf(" %[^\n\r]", valor.nameP);
+            if(strcmp(valor.nameP, "fin")){
+                insertarElementoLista(&personaje.killed, finLista(personaje.killed), valor);
+            }
+        }
+    }
+    else {
+        printf("Campo incorrecto\n");
+    }
+
+    modificarElementoAbb(*arbol, personaje);
+}
