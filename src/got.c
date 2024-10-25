@@ -215,6 +215,10 @@ void guardarListaEnArchivo(FILE *archivo, TLISTA lista) {
             fprintf(archivo, ","); // Añadimos coma entre elementos
         }
     }
+
+    if(longitudLista(lista)==0){
+        fprintf(archivo, "-");
+    }
 }
 
 // Función auxiliar para guardar un personaje en el archivo
