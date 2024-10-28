@@ -6,6 +6,7 @@
 #include <unistd.h>
 
 #include "./include/got.h"
+#include "./include/colors.h"
 
 
 ////////////////////
@@ -31,8 +32,12 @@ int main(int argc, char** argv){
         printf("\n--------------------------------------------------------------\n");
         printf("\nBienvenido al programa de gestion de personajes de GoT\n");
         printf("\nA) Anhadir personaje\n");
-        printf("\nL) Listar personajes\n");
+        printf("\nB) Buscar asesino\n");
         printf("\nE) Eliminar personaje\n");
+        printf("\nH) Buscar hijo\n");
+        printf("\nK) Buscar mayor killer\n");
+        printf("\nL) Listar personajes\n");
+        printf("\nM) Modificar personajes\n");
         printf("\nS) Salir\n");
         printf("\n--------------------------------------------------------------\n");
         printf("\nOpción: ");
@@ -51,13 +56,19 @@ int main(int argc, char** argv){
             printf("Buscar Asesino\n");
             buscarAsesino(arbol);
                 break;
-            
+
+            case 'E':
+            case 'e':
+            printf("Eliminar\n");
+            eliminarPersonaje(&arbol);
+                break;
+
             case 'H': 
             case 'h':
             printf("Buscar Hijo\n");
             buscarHijo(arbol);
                 break;
-            
+
             case 'K': 
             case 'k':
             printf("Buscar Mayor Killer\n");
@@ -76,19 +87,15 @@ int main(int argc, char** argv){
             modificarPersonaje(&arbol);
                 break;
 
-            case 'E':
-            case 'e':
-            printf("Eliminar\n");
-            eliminarPersonaje(&arbol);
-                break;
-
             case 'S':
             case 's':
             printf("Salir\n");
                 break;
 
             default:
-                printf("\x1b[31m\nOpción incorrecta\x1b[0m\n");
+                printf(ROJO);
+                printf("\nOpción incorrecta\n");
+                printf(RESET);
                 sleep(2);
                 break;
         }

@@ -6,6 +6,7 @@
 #include <unistd.h>
 
 #include "../include/abb.h"
+#include "../include/colors.h"
 
 void anhadirPersonaje(TABB *arbol){
     // Variables
@@ -14,6 +15,7 @@ void anhadirPersonaje(TABB *arbol){
     TIPOELEMENTOABB personaje;
 
     // Solicita datos del personaje
+    printf(AMARILLO);
     printf("\nIntroduce el nombre del personaje: ");
     scanf(" %[^\n\r]", personaje.name);
 
@@ -58,6 +60,7 @@ void anhadirPersonaje(TABB *arbol){
 
     // Inserta personaje en el árbol
     insertarElementoAbb(arbol, personaje);
+    printf(RESET);
 }
 
 void imprimirLista(TLISTA lista){
@@ -108,12 +111,21 @@ void eliminarPersonaje(TABB *arbol){
     TIPOELEMENTOABB personaje;
     char input[MAX];
 
+
     // Solicita nombre del personaje a eliminar
     printf("Introduce el nombre del personaje que quieres eliminar: ");
     scanf(" %s", input);
 
     // Busca y elimina el personaje
     buscarNodoAbb(*arbol, input, &personaje);
+
+    if (esMiembroAbb(*arbol, personaje)) {  // Si el nombre sigue vacío, no se encontró
+        printf(ROJO);
+        printf("No se encontró el personaje\n");
+        printf(RESET);
+        return;
+    }
+
     suprimirElementoAbb(arbol, personaje);
 }
 
@@ -186,7 +198,9 @@ void cargarArchivo(char* nombre_archivo, TABB* arbol_principal){
     // Abro el archivo
     FILE *archivo_personajes = fopen(nombre_archivo, "r");
     if (archivo_personajes == NULL){
-        perror("\x1b[31mFallo al intentar abrir el archivo\x1b[0m\n");
+        printf(ROJO);
+        perror("Fallo al intentar abrir el archivo\n");
+        printf(RESET);
         exit(1);
     }
 
@@ -266,7 +280,9 @@ void escrituraPreorden(FILE *archivo,TABB arbol){
 void guardarArchivo(const char* nombre_archivo, TABB arbol) {
     FILE *archivo = fopen(nombre_archivo, "w");
     if (archivo == NULL) {
+        printf(ROJO);
         printf("Error al abrir el archivo para escritura.\n");
+        printf(RESET);
         return;
     }
 
@@ -314,7 +330,9 @@ void buscarAsesino(TABB arbol){
     if(!esAbbVacio(arbol)){
         buscarAsesinoRecursivo(arbol,muerto);
     }else{
+        printf(ROJO);
         printf("Arbol vacio\n");
+        printf(RESET);
     }
 }
 
@@ -355,11 +373,11 @@ void buscarHijo(TABB arbol){
     if(!esAbbVacio(arbol)){
         buscarHijoRecursivo(arbol,padre);
     }else{
+        printf(ROJO);
         printf("Arbol vacio\n");
+        printf(RESET);
     }
 }
-
-
 
 void buscarMayorKillerRecursivo(TABB arbol, int *max_killed){
     TIPOELEMENTOABB elemento;
@@ -397,15 +415,15 @@ void buscarMayorKiller(TABB arbol){
         printearMayorKillerRecursivo(arbol, max_killed);
         printf("\n");
     }else{
+        printf(ROJO);
         printf("Arbol vacio\n");
+        printf(RESET);
     }
 }
-
 
 void modificarPersonaje(TABB *arbol){
     // Variables
     TIPOELEMENTOABB personaje, nuevopersonaje;
-    strcpy(personaje.name, "");
     char input[MAX];
     char campo[MAX];
     TIPOELEMENTOLISTA valor;
@@ -416,22 +434,26 @@ void modificarPersonaje(TABB *arbol){
     buscarNodoAbb(*arbol, input, &personaje);
 
     // Verifica si se encontró el personaje
-    if (strcmp(personaje.name, "") == 0) {  // Si el nombre sigue vacío, no se encontró
+    if (esMiembroAbb(*arbol, personaje)) {  // Si el nombre sigue vacío, no se encontró
+        printf(ROJO);
         printf("No se encontró el personaje\n");
+        printf(RESET);
         return;
     }
 
-
+    printf(VERDE);
     printf("PERSONAJE ENCONTRADO: \n");
+    printf(RESET);
     printf("Que campo quieres modificar?\n");
     printf("\tname\n\thouse\n\troyal\n\tparents\n\tsiblings\n\tkilled\n");
     scanf(" %s", campo);
 
     // Comparaciones de campo con strcmp
     if (strcmp(campo, "name") == 0) {
+        printf(AMARILLO);
         printf("Introduce el nuevo nombre: ");
+        printf(RESET);
         scanf(" %[^\n\r]", personaje.name);
-
 
         buscarNodoAbb(*arbol, input, &nuevopersonaje);
 
@@ -445,12 +467,16 @@ void modificarPersonaje(TABB *arbol){
 
     } 
     else if (strcmp(campo, "house") == 0) {
+        printf(AMARILLO);
         printf("Introduce la nueva casa: ");
+        printf(RESET);
         scanf(" %s", valor.nameP);
         strcpy(personaje.house, valor.nameP);
     }
     else if (strcmp(campo, "royal") == 0) {
+        printf(AMARILLO);
         printf("Introduce el nuevo valor para royal (0 o 1): ");
+        printf(RESET);
         int intValor;
         scanf("%d", &intValor);
         personaje.royal = intValor;
@@ -459,7 +485,9 @@ void modificarPersonaje(TABB *arbol){
         destruirLista(&personaje.parents);
         crearLista(&personaje.parents);
         while(strcmp(valor.nameP, "fin")){
+            printf(AMARILLO);
             printf("\nParents (fin para terminar): ");
+            printf(RESET);
             scanf(" %[^\n\r]", valor.nameP);
             if(strcmp(valor.nameP, "fin")){
                 insertarElementoLista(&personaje.parents, finLista(personaje.parents), valor);
@@ -470,7 +498,9 @@ void modificarPersonaje(TABB *arbol){
         destruirLista(&personaje.siblings);
         crearLista(&personaje.siblings);
         while(strcmp(valor.nameP, "fin")){
+            printf(AMARILLO);
             printf("\nSiblings (fin para terminar): ");
+            printf(RESET);
             scanf(" %[^\n\r]", valor.nameP);
             if(strcmp(valor.nameP, "fin")){
                 insertarElementoLista(&personaje.siblings, finLista(personaje.siblings), valor);
@@ -481,7 +511,9 @@ void modificarPersonaje(TABB *arbol){
         destruirLista(&personaje.killed);
         crearLista(&personaje.killed);
         while(strcmp(valor.nameP, "fin")){
+            printf(AMARILLO);
             printf("\nKilled (fin para terminar): ");
+            printf(RESET);
             scanf(" %[^\n\r]", valor.nameP);
             if(strcmp(valor.nameP, "fin")){
                 insertarElementoLista(&personaje.killed, finLista(personaje.killed), valor);
@@ -489,7 +521,9 @@ void modificarPersonaje(TABB *arbol){
         }
     }
     else {
+        printf(ROJO);
         printf("Campo incorrecto\n");
+        printf(RESET);
     }
 
     modificarElementoAbb(*arbol, personaje);
