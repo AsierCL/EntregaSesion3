@@ -65,11 +65,15 @@ void imprimirLista(TLISTA lista){
     TIPOELEMENTOLISTA elemento;
     TPOSICION posicion = primeroLista(lista);
     
-    // Recorre e imprime la lista
-    for(int i = 0; i < longitudLista(lista); i++){
-        recuperarElementoLista(lista, posicion, &elemento);
-        posicion = siguienteLista(lista, posicion);
-        printf("%s, ", elemento.nameP);
+    if(longitudLista(lista)==0){
+        printf("-");
+    }else{
+        // Recorre e imprime la lista
+        for(int i = 0; i < longitudLista(lista); i++){
+            recuperarElementoLista(lista, posicion, &elemento);
+            posicion = siguienteLista(lista, posicion);
+            printf("%s, ", elemento.nameP);
+        }
     }
 }
 
@@ -142,7 +146,7 @@ void procesar_linea(char* linea, TIPOELEMENTOABB* elemento) {
 
     // Token para los padres
     token = strtok_r(rest, "|", &rest);
-    if (token != NULL) {
+    if (token != NULL && *token != "-") {
         crearLista(&elemento->parents);  // Inicializamos la lista de padres
         char* subtoken;
         char* subrest = token;  // Variable auxiliar para los subtokens
@@ -417,7 +421,6 @@ void modificarPersonaje(TABB *arbol){
         return;
     }
 
-    nuevopersonaje = personaje;
 
     printf("PERSONAJE ENCONTRADO: \n");
     printf("Que campo quieres modificar?\n");
@@ -427,8 +430,19 @@ void modificarPersonaje(TABB *arbol){
     // Comparaciones de campo con strcmp
     if (strcmp(campo, "name") == 0) {
         printf("Introduce el nuevo nombre: ");
-        scanf(" %s", valor.nameP);
-        strcpy(personaje.name, valor.nameP);
+        scanf(" %[^\n\r]", personaje.name);
+
+
+        buscarNodoAbb(*arbol, input, &nuevopersonaje);
+
+        crearLista(&nuevopersonaje.parents);
+        crearLista(&nuevopersonaje.siblings);
+        crearLista(&nuevopersonaje.killed);
+
+        modificarElementoAbb(*arbol, nuevopersonaje);
+        suprimirElementoAbb(arbol, nuevopersonaje);
+        insertarElementoAbb(arbol, personaje);
+
     } 
     else if (strcmp(campo, "house") == 0) {
         printf("Introduce la nueva casa: ");
