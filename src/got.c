@@ -119,7 +119,7 @@ void eliminarPersonaje(TABB *arbol){
     // Busca y elimina el personaje
     buscarNodoAbb(*arbol, input, &personaje);
 
-    if (esMiembroAbb(*arbol, personaje)) {  // Si el nombre sigue vacío, no se encontró
+    if (!esMiembroAbb(*arbol, personaje)) {  // Si el nombre sigue vacío, no se encontró
         printf(ROJO);
         printf("No se encontró el personaje\n");
         printf(RESET);
@@ -158,7 +158,7 @@ void procesar_linea(char* linea, TIPOELEMENTOABB* elemento) {
 
     // Token para los padres
     token = strtok_r(rest, "|", &rest);
-    if (token != NULL && *token != "-") {
+    if (token != NULL && *token != '-') {
         crearLista(&elemento->parents);  // Inicializamos la lista de padres
         char* subtoken;
         char* subrest = token;  // Variable auxiliar para los subtokens
@@ -293,35 +293,38 @@ void guardarArchivo(const char* nombre_archivo, TABB arbol) {
 
 
 //<------------------------------------------------------------------------------------------>//
+// Función que verifica si un personaje ha asesinado a otro
 bool esAsesino(char* muerto, TIPOELEMENTOABB asesino){
     // Variables
     TIPOELEMENTOLISTA elemento;
     TPOSICION posicion = primeroLista(asesino.killed);
     
-    // Recorre e imprime la lista
+    // Recorre la lista de asesinados por el personaje
     for(int i = 0; i < longitudLista(asesino.killed); i++){
         recuperarElementoLista(asesino.killed, posicion, &elemento);
         posicion = siguienteLista(asesino.killed, posicion);
         if(!strcmp(muerto, elemento.nameP)){
-            return true;
+            return true; // Retorna true si encuentra coincidencia en la lista
         }
     }
-    return false;
+    return false; // No encontró coincidencia en la lista de asesinados
 }
 
+// Función recursiva para buscar un asesino en el árbol binario de búsqueda (ABB)
 void buscarAsesinoRecursivo(TABB arbol, char* muerto){
     TIPOELEMENTOABB elemento;
     if(esAbbVacio(arbol)){
-        return;
+        return; // Termina si el árbol está vacío
     }
-    buscarAsesinoRecursivo(izqAbb(arbol),muerto);
+    buscarAsesinoRecursivo(izqAbb(arbol),muerto); // Recorre el subárbol izquierdo
     leerElementoAbb(arbol, &elemento);
     if(esAsesino(muerto, elemento)){
-        printf("%s,",elemento.name);
+        printf("%s,",elemento.name); // Imprime el nombre del asesino encontrado
     }
-    buscarAsesinoRecursivo(derAbb(arbol),muerto);
+    buscarAsesinoRecursivo(derAbb(arbol),muerto); // Recorre el subárbol derecho
 }
 
+// Función que pide al usuario el nombre del personaje asesinado y busca a su asesino
 void buscarAsesino(TABB arbol){
     char muerto[MAX];
     printf("Introduce el nombre del personaje que queres buscar el asesino\n");
@@ -336,22 +339,24 @@ void buscarAsesino(TABB arbol){
     }
 }
 
+// Función que verifica si un personaje es hijo de otro
 bool esHijo(char* padre, TIPOELEMENTOABB hijo){
     // Variables
     TIPOELEMENTOLISTA elemento;
     TPOSICION posicion = primeroLista(hijo.parents);
     
-    // Recorre e imprime la lista
+    // Recorre la lista de padres del personaje
     for(int i = 0; i < longitudLista(hijo.parents); i++){
         recuperarElementoLista(hijo.parents, posicion, &elemento);
         posicion = siguienteLista(hijo.parents, posicion);
         if(!strcmp(padre, elemento.nameP)){
-            return true;
+            return true; // Retorna true si encuentra coincidencia en la lista de padres
         }
     }
     return false;
 }
 
+// Función recursiva para buscar hijos de un personaje en el ABB
 void buscarHijoRecursivo(TABB arbol, char* padre){
     TIPOELEMENTOABB elemento;
     if(esAbbVacio(arbol)){
@@ -365,6 +370,7 @@ void buscarHijoRecursivo(TABB arbol, char* padre){
     buscarHijoRecursivo(derAbb(arbol),padre);
 }
 
+// Función que pide al usuario el nombre de un personaje para buscar sus hijos en el ABB
 void buscarHijo(TABB arbol){
     char padre[MAX];
     printf("Introduce el nombre del personaje que queres buscar sus hijos\n");
@@ -379,6 +385,7 @@ void buscarHijo(TABB arbol){
     }
 }
 
+// Función recursiva para encontrar el personaje con el mayor número de asesinatos
 void buscarMayorKillerRecursivo(TABB arbol, int *max_killed){
     TIPOELEMENTOABB elemento;
     if(esAbbVacio(arbol)){
@@ -387,11 +394,12 @@ void buscarMayorKillerRecursivo(TABB arbol, int *max_killed){
     buscarMayorKillerRecursivo(izqAbb(arbol), max_killed);
     leerElementoAbb(arbol, &elemento);
     if(longitudLista(elemento.killed) > *max_killed){
-        *max_killed = longitudLista(elemento.killed);
+        *max_killed = longitudLista(elemento.killed); // Actualiza el máximo si el personaje actual ha asesinado más
     }
     buscarMayorKillerRecursivo(derAbb(arbol), max_killed);
 }
 
+// Función recursiva para imprimir los personajes que coinciden con el máximo de asesinatos
 void printearMayorKillerRecursivo(TABB arbol, int max_killed){
     TIPOELEMENTOABB elemento;
     if(esAbbVacio(arbol)){
@@ -405,9 +413,8 @@ void printearMayorKillerRecursivo(TABB arbol, int max_killed){
     printearMayorKillerRecursivo(derAbb(arbol), max_killed);
 }
 
+// Función que imprime el personaje con más asesinatos en el ABB
 void buscarMayorKiller(TABB arbol){
-    char padre[MAX];
-    printf("Mayor killer:\n");
     int max_killed = 0;
     
     if(!esAbbVacio(arbol)){
@@ -421,6 +428,7 @@ void buscarMayorKiller(TABB arbol){
     }
 }
 
+// Función para modificar las propiedades de un personaje en el ABB
 void modificarPersonaje(TABB *arbol){
     // Variables
     TIPOELEMENTOABB personaje, nuevopersonaje;
@@ -433,8 +441,8 @@ void modificarPersonaje(TABB *arbol){
 
     buscarNodoAbb(*arbol, input, &personaje);
 
-    // Verifica si se encontró el personaje
-    if (esMiembroAbb(*arbol, personaje)) {  // Si el nombre sigue vacío, no se encontró
+    // Verifica si el personaje existe en el ABB
+    if (!esMiembroAbb(*arbol, personaje)) { 
         printf(ROJO);
         printf("No se encontró el personaje\n");
         printf(RESET);
@@ -448,40 +456,33 @@ void modificarPersonaje(TABB *arbol){
     printf("\tname\n\thouse\n\troyal\n\tparents\n\tsiblings\n\tkilled\n");
     scanf(" %s", campo);
 
-    // Comparaciones de campo con strcmp
+    // Modifica el campo especificado por el usuario
     if (strcmp(campo, "name") == 0) {
         printf(AMARILLO);
         printf("Introduce el nuevo nombre: ");
         printf(RESET);
         scanf(" %[^\n\r]", personaje.name);
-
         buscarNodoAbb(*arbol, input, &nuevopersonaje);
-
         crearLista(&nuevopersonaje.parents);
         crearLista(&nuevopersonaje.siblings);
         crearLista(&nuevopersonaje.killed);
-
         modificarElementoAbb(*arbol, nuevopersonaje);
         suprimirElementoAbb(arbol, nuevopersonaje);
         insertarElementoAbb(arbol, personaje);
-
-    } 
-    else if (strcmp(campo, "house") == 0) {
+    } else if (strcmp(campo, "house") == 0) {
         printf(AMARILLO);
         printf("Introduce la nueva casa: ");
         printf(RESET);
         scanf(" %s", valor.nameP);
         strcpy(personaje.house, valor.nameP);
-    }
-    else if (strcmp(campo, "royal") == 0) {
+    } else if (strcmp(campo, "royal") == 0) {
         printf(AMARILLO);
         printf("Introduce el nuevo valor para royal (0 o 1): ");
         printf(RESET);
         int intValor;
         scanf("%d", &intValor);
         personaje.royal = intValor;
-    }
-    else if (strcmp(campo, "parents") == 0) {
+    } else if (strcmp(campo, "parents") == 0) {
         destruirLista(&personaje.parents);
         crearLista(&personaje.parents);
         while(strcmp(valor.nameP, "fin")){
@@ -493,8 +494,7 @@ void modificarPersonaje(TABB *arbol){
                 insertarElementoLista(&personaje.parents, finLista(personaje.parents), valor);
             }
         }
-    }
-    else if (strcmp(campo, "siblings") == 0) {
+    } else if (strcmp(campo, "siblings") == 0) {
         destruirLista(&personaje.siblings);
         crearLista(&personaje.siblings);
         while(strcmp(valor.nameP, "fin")){
@@ -506,8 +506,7 @@ void modificarPersonaje(TABB *arbol){
                 insertarElementoLista(&personaje.siblings, finLista(personaje.siblings), valor);
             }
         }
-    }
-    else if (strcmp(campo, "killed") == 0) {
+    } else if (strcmp(campo, "killed") == 0) {
         destruirLista(&personaje.killed);
         crearLista(&personaje.killed);
         while(strcmp(valor.nameP, "fin")){
@@ -519,8 +518,7 @@ void modificarPersonaje(TABB *arbol){
                 insertarElementoLista(&personaje.killed, finLista(personaje.killed), valor);
             }
         }
-    }
-    else {
+    } else {
         printf(ROJO);
         printf("Campo incorrecto\n");
         printf(RESET);

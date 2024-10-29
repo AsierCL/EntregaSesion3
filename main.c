@@ -30,15 +30,17 @@ int main(int argc, char** argv){
     do{
         //system("clear");
         printf("\n--------------------------------------------------------------\n");
+        printf(AZUL);
         printf("\nBienvenido al programa de gestion de personajes de GoT\n");
-        printf("\nA) Anhadir personaje\n");
-        printf("\nB) Buscar asesino\n");
-        printf("\nE) Eliminar personaje\n");
-        printf("\nH) Buscar hijo\n");
-        printf("\nK) Buscar mayor killer\n");
-        printf("\nL) Listar personajes\n");
-        printf("\nM) Modificar personajes\n");
-        printf("\nS) Salir\n");
+        printf(RESET);
+        printf("\n\tA) Anhadir personaje\n");
+        printf("\n\tB) Buscar asesino\n");
+        printf("\n\tE) Eliminar personaje\n");
+        printf("\n\tH) Buscar hijo\n");
+        printf("\n\tK) Buscar mayor killer\n");
+        printf("\n\tL) Listar personajes\n");
+        printf("\n\tM) Modificar personajes\n");
+        printf("\n\tS) Salir\n");
         printf("\n--------------------------------------------------------------\n");
         printf("\nOpción: ");
         scanf(" %c", &opcion);
