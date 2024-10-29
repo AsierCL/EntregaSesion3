@@ -1,7 +1,7 @@
 #ifndef GOT_H
 #define GOT_H
 
-#include "../include/abb.h"
+#include "abb.h"
 
 /**
  * Añade un nuevo personaje al árbol de personajes.

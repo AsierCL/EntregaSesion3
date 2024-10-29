@@ -5,8 +5,8 @@
 #include <math.h>
 #include <unistd.h>
 
-#include "./include/got.h"
-#include "./include/colors.h"
+#include "got.h"
+#include "colors.h"
 
 
 ////////////////////

@@ -5,8 +5,8 @@
 #include <math.h>
 #include <unistd.h>
 
-#include "../include/abb.h"
-#include "../include/colors.h"
+#include "abb.h"
+#include "colors.h"
 
 void anhadirPersonaje(TABB *arbol){
     // Variables
@@ -158,7 +158,7 @@ void procesar_linea(char* linea, TIPOELEMENTOABB* elemento) {
 
     // Token para los padres
     token = strtok_r(rest, "|", &rest);
-    if (token != NULL && *token != '-') {
+    if (token != NULL) {
         crearLista(&elemento->parents);  // Inicializamos la lista de padres
         char* subtoken;
         char* subrest = token;  // Variable auxiliar para los subtokens
