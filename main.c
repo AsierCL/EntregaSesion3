@@ -5,7 +5,8 @@
 #include <math.h>
 #include <unistd.h>
 
-#include "./include/got.h"
+#include "got.h"
+#include "colors.h"
 
 
 ////////////////////
@@ -29,11 +30,17 @@ int main(int argc, char** argv){
     do{
         //system("clear");
         printf("\n--------------------------------------------------------------\n");
+        printf(AZUL);
         printf("\nBienvenido al programa de gestion de personajes de GoT\n");
-        printf("\nA) Anhadir personaje\n");
-        printf("\nL) Listar personajes\n");
-        printf("\nE) Eliminar personaje\n");
-        printf("\nS) Salir\n");
+        printf(RESET);
+        printf("\n\tA) Anhadir personaje\n");
+        printf("\n\tB) Buscar asesino\n");
+        printf("\n\tE) Eliminar personaje\n");
+        printf("\n\tH) Buscar hijo\n");
+        printf("\n\tK) Buscar mayor killer\n");
+        printf("\n\tL) Listar personajes\n");
+        printf("\n\tM) Modificar personajes\n");
+        printf("\n\tS) Salir\n");
         printf("\n--------------------------------------------------------------\n");
         printf("\nOpción: ");
         scanf(" %c", &opcion);
@@ -46,10 +53,10 @@ int main(int argc, char** argv){
             anhadirPersonaje(&arbol);
                 break;
 
-            case 'L':
-            case 'l':
-            printf("Listar\n");
-            listarPersonajes(arbol);
+            case 'B': 
+            case 'b':
+            printf("Buscar Asesino\n");
+            buscarAsesino(arbol);
                 break;
 
             case 'E':
@@ -58,13 +65,39 @@ int main(int argc, char** argv){
             eliminarPersonaje(&arbol);
                 break;
 
+            case 'H': 
+            case 'h':
+            printf("Buscar Hijo\n");
+            buscarHijo(arbol);
+                break;
+
+            case 'K': 
+            case 'k':
+            printf("Buscar Mayor Killer\n");
+            buscarMayorKiller(arbol);
+                break;
+
+            case 'L':
+            case 'l':
+            printf("Listar\n");
+            listarPersonajes(arbol);
+                break;
+            
+            case 'M':
+            case 'm':
+            printf("Modificar personaje\n");
+            modificarPersonaje(&arbol);
+                break;
+
             case 'S':
             case 's':
             printf("Salir\n");
                 break;
 
             default:
-                printf("\x1b[31m\nOpción incorrecta\x1b[0m\n");
+                printf(ROJO);
+                printf("\nOpción incorrecta\n");
+                printf(RESET);
                 sleep(2);
                 break;
         }
